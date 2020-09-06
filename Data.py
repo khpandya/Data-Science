@@ -6,6 +6,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 shopids=[]
+shopidordersums=[]
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -53,12 +54,19 @@ def main():
             # Print columns A and E, which correspond to indices 0 and 4.
             #print('%s, %s' % (row[1], row[6]))
     else:
-        #list shops
+        # list shops
         global shopids
         for row in values:
             if row[1] not in shopids:
                 shopids.append(row[1])
         print(shopids)
+        # list shopid sums
+        global shopidsums
+        sums=0
+        for shopid in shopids:
+            for row in values:
+                if row[1]==shopid:
+                    sums+=row[4]
         
 if __name__ == '__main__':
     main()
