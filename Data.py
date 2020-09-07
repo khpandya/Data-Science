@@ -6,11 +6,14 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import matplotlib.pyplot as plt
 import numpy as np
+import datetime
 
 shopids=[]
 shopidordersums=[]
 custids=[]
 numberOfRecurs=[]
+# measure customer retention
+retentionMetricForShops=[]
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
@@ -20,22 +23,25 @@ SAMPLE_RANGE_NAME = 'A2:G5001'
 
 
 def plotgraph():
-    global custids, numberOfRecurs
+    global shopids, retentionMetricForShops
     #put x axis labels here
-    x=custids
-    y=numberOfRecurs
+    x=shopids
+    y=retentionMetricForShops
     
     index=np.arange(len(x))
     plt.bar(index, y)
     
     #title axes
-    plt.xlabel('User ids',fontsize=18)
-    plt.ylabel('Number of times ordered',fontsize=18)
+    plt.xlabel('Shops',fontsize=18)
+    plt.ylabel('Retention Metric',fontsize=18)
     
     #attach names to the xaxis points and rotate them to give enough space
     plt.xticks(index,x,fontsize=10,rotation=90)
     #title graph
-    plt.title('number of times each customer made a separate purchase',fontsize=20)
+    plt.title('Customer Retention For each Shop',fontsize=20)
+    #set axes limits
+    axes=plt.gca()
+    axes.set_ylim([1,1.7])
     
     plt.show()
     
@@ -74,57 +80,67 @@ def main():
     if not values:
         print('No data found.')
     else:
-        # list shops and users
-        global shopids, custids
-        for row in values:
-            if row[1] not in shopids:
-                shopids.append(row[1])
-            if row[2] not in custids:
-                custids.append(row[2])
-        # list number of times customers have made orders
-        global numberOfRecurs
-        for customer in custids:
-            numberOfOrders=0
-            for row in values:
-                if row[2]==customer:
-                    numberOfOrders+=1
-            numberOfRecurs.append(numberOfOrders)         
-        # list shopid sums
-        global shopidordersums
-        for shopid in shopids:
-            sums=0
-            for row in values:
-                if row[1]==shopid:
-                    sums+=int(row[3])
-            shopidordersums.append(sums)
-            
-        # measure customer retention
-        retentionMetricForShops=[]
-        #go to each shop
-        for shop in shopids:
-            userid=[]
-            numberOfPurchasesByEachUser=[]
-            #check each row
-            for row in values:
-                #if the current shop is seen and if the user associated with the order isn't already in the customer list, add them
-                if (row[1]==shop) and (row[2] not in userid):
-                    userid.append(row[2])
-            #At this point we have a list of all customer who have made a purchase at the shop called userid
-            #Now make a list of the number of times each of these users made a purchase specifically at this shop
-            #Go to each user
-            for user in userid:
-                purchases=0
-                #go through each row
-                for row in values:
-                    #if the current shop is found and the current user is matched with it, increase the number of purchases by 1
-                    if (row[1]==shop) and (row[2]==user):
-                        purchases+=1
-                numberOfPurchasesByEachUser.append(purchases)
-            #Now we have the number of purchases by all users who made a purchase at this particular shop and also the number of users who made a purchase
-            averageRetention=sum(numberOfPurchasesByEachUser)/len(userid)
-            retentionMetricForShops.append(averageRetention)
+        datetimeobj=datetime(values[1][6])
+        print(type(datetimeobj))
+#         # list shops and users
+#         global shopids, custids, retentionMetricForShops
+#         for row in values:
+#             if row[1] not in shopids:
+#                 shopids.append(row[1])
+#             if row[2] not in custids:
+#                 custids.append(row[2])
+#         # list number of times customers have made orders
+#         global numberOfRecurs
+#         for customer in custids:
+#             numberOfOrders=0
+#             for row in values:
+#                 if row[2]==customer:
+#                     numberOfOrders+=1
+#             numberOfRecurs.append(numberOfOrders)         
+#         # list shopid sums
+#         global shopidordersums
+#         for shopid in shopids:
+#             sums=0
+#             for row in values:
+#                 if row[1]==shopid:
+#                     sums+=int(row[3])
+#             shopidordersums.append(sums)
+#             
+# 
+#         #go to each shop
+#         for shop in shopids:
+#             userid=[]
+#             numberOfPurchasesByEachUser=[]
+#             #check each row
+#             for row in values:
+#                 #if the current shop is seen and if the user associated with the order isn't already in the customer list, add them
+#                 if (row[1]==shop) and (row[2] not in userid):
+#                     userid.append(row[2])
+#             #At this point we have a list of all customer who have made a purchase at the shop called userid
+#             #Now make a list of the number of times each of these users made a purchase specifically at this shop
+#             #Go to each user
+#             for user in userid:
+#                 purchases=0
+#                 #go through each row
+#                 for row in values:
+#                     #if the current shop is found and the current user is matched with it, increase the number of purchases by 1
+#                     if (row[1]==shop) and (row[2]==user):
+#                         purchases+=1
+#                 numberOfPurchasesByEachUser.append(purchases)
+#             #Now we have the number of purchases by all users who made a purchase at this particular shop and also the number of users who made a purchase
+#             averageRetention=sum(numberOfPurchasesByEachUser)/len(userid)
+#             retentionMetricForShops.append(averageRetention)
 
-        print(retentionMetricForShops)
+        # retention metric test
+        # the retention metric for shop 46 came out to be 1, it seems as if all the users who made a purchase were unique so the following code was written to test the hypothesis (which turned out to be correct)
+#         lst=[]
+#         for row in values:
+#             if row[1]=='31':
+#               lst.append(row[2])
+#         if len(lst) > len(set(lst)):
+#             print('oh no!')
+#         elif len(lst)==len(set(lst)):
+#             print('Yes! Code is correct!')
         #plot a graph
         #plotgraph()
         
