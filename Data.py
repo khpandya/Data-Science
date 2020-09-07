@@ -18,6 +18,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 SAMPLE_SPREADSHEET_ID = '1xIQEm_tTyFsYYojQuUmu7QrF6wErlsOuy5-7wV9lCow'
 SAMPLE_RANGE_NAME = 'A2:G5001'
 
+
 def plotgraph():
     global custids, numberOfRecurs
     #put x axis labels here
@@ -28,13 +29,13 @@ def plotgraph():
     plt.bar(index, y)
     
     #title axes
-    plt.xlabel('Shop ids',fontsize=18)
-    plt.ylabel('total value of orders (x10^7)',fontsize=18)
+    plt.xlabel('User ids',fontsize=18)
+    plt.ylabel('Number of times ordered',fontsize=18)
     
     #attach names to the xaxis points and rotate them to give enough space
     plt.xticks(index,x,fontsize=10,rotation=90)
     #title graph
-    plt.title('total value of orders for each shop',fontsize=20)
+    plt.title('number of times each customer made a separate purchase',fontsize=20)
     
     plt.show()
     
@@ -72,11 +73,6 @@ def main():
 
     if not values:
         print('No data found.')
-    #else:
-    #   print('Name, Major:')
-    #   for row in values:
-            # Print columns A and E, which correspond to indices 0 and 4.
-            #print('%s, %s' % (row[1], row[6]))
     else:
         # list shops and users
         global shopids, custids
@@ -85,7 +81,6 @@ def main():
                 shopids.append(row[1])
             if row[2] not in custids:
                 custids.append(row[2])
-        #print(custids)
         # list number of times customers have made orders
         global numberOfRecurs
         for customer in custids:
@@ -93,9 +88,7 @@ def main():
             for row in values:
                 if row[2]==customer:
                     numberOfOrders+=1
-            numberOfRecurs.append(numberOfOrders)
-        print(numberOfRecurs)
-                    
+            numberOfRecurs.append(numberOfOrders)         
         # list shopid sums
         global shopidordersums
         for shopid in shopids:
@@ -104,7 +97,35 @@ def main():
                 if row[1]==shopid:
                     sums+=int(row[3])
             shopidordersums.append(sums)
-        #print(shopidordersums)
+            
+        # measure customer retention
+        retentionMetricForShops=[]
+        #go to each shop
+        for shop in shopids:
+            userid=[]
+            numberOfPurchasesByEachUser=[]
+            #check each row
+            for row in values:
+                #if the current shop is seen and if the user associated with the order isn't already in the customer list, add them
+                if (row[1]==shop) and (row[2] not in userid):
+                    userid.append(row[2])
+            #At this point we have a list of all customer who have made a purchase at the shop called userid
+            #Now make a list of the number of times each of these users made a purchase specifically at this shop
+            #Go to each user
+            for user in userid:
+                purchases=0
+                #go through each row
+                for row in values:
+                    #if the current shop is found and the current user is matched with it, increase the number of purchases by 1
+                    if (row[1]==shop) and (row[2]==user):
+                        purchases+=1
+                numberOfPurchasesByEachUser.append(purchases)
+            #Now we have the number of purchases by all users who made a purchase at this particular shop and also the number of users who made a purchase
+            averageRetention=sum(numberOfPurchasesByEachUser)/len(userid)
+            retentionMetricForShops.append(averageRetention)
+
+        print(retentionMetricForShops)
+        #plot a graph
         #plotgraph()
         
 if __name__ == '__main__':
