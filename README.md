@@ -55,32 +55,40 @@ Many more useful observations and metrics can be derived from this data which I 
 - The value of 4 is in distributing ads, offers, discounts etc. that are strategically timed considering the times where sales are most prominent. It can also help with inventory tracking. It can also be used to decide the best times for website maintenance so it is aligned with a time where sales are lower.
 
 ### Answer 2a
-**54** orders were shipped by Speedy Express in total
+**54** orders were shipped by Speedy Express in total.
+
 Query used - 
 ```
-SELECT COUNT(OrderID) FROM [Orders] where ShipperID in (Select ShipperID FROM Shippers where ShipperName is 'Speedy Express')
+SELECT COUNT(OrderID) FROM [Orders] where ShipperID in 
+(Select ShipperID FROM Shippers where ShipperName is 'Speedy Express')
 ```
-### Answer 2b (or not to be, that is the question)
-All puns aside, the answer is **Peacock**
+### Answer 2b 
+(or not to be, that is the question)
+
+All puns aside, the answer is **Peacock**.
 I ran two queries - First
 ```
 SELECT EmployeeID,COUNT(EmployeeID) FROM [Orders] GROUP BY EmployeeID Order by COUNT(EmployeeID) DESC LIMIT 2
 ```
-Notice the `limit 2` that is in case there were more than one employees who had the same (max.) amount of orders so this made sure that wasn’t the case since the second most orders were 31 after 40. After ensuring this safety before I answer - I ran
+Notice the `limit 2`, that is in case there were more than one employees who had the same (max.) amount of orders so this made sure that wasn’t the case. After ensuring this - I ran
 ```
 SELECT LastName FROM [Employees] WHERE EmployeeID=4
 ```
 which gives me **Peacock**.
 We could also directly write 
 ```
-SELECT LastName FROM [Employees] WHERE EmployeeID in (SELECT EmployeeID FROM [Orders] GROUP BY EmployeeID Order by COUNT(EmployeeID) DESC LIMIT 1)
+SELECT LastName FROM [Employees] WHERE EmployeeID in 
+(SELECT EmployeeID FROM [Orders] GROUP BY EmployeeID Order by COUNT(EmployeeID) DESC LIMIT 1)
 ```
 If we wanted to skip the check for the common maximum.
 ### Answer 2c
 **Gorgonzola Telino** was ordered the most by customers in Germany.
 Run -
 ```
-Select ProductID,COUNT(ProductID) AS number from OrderDetails WHERE OrderID in (Select OrderID from Orders Where CustomerID in (Select CustomerID from Customers where Country is 'Germany')) Group by ProductID Order by number DESC LIMIT 2
+Select ProductID,COUNT(ProductID) AS number from OrderDetails WHERE OrderID in 
+(Select OrderID from Orders Where CustomerID in 
+(Select CustomerID from Customers where Country is 'Germany')) 
+Group by ProductID Order by number DESC LIMIT 2
 ```
 This gives the productid of the two most popular products ordered by people from germany (two to make sure there aren’t two maximums). The product id is 31.
 Now,
