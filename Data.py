@@ -133,65 +133,65 @@ def main():
         purchasesPerDay.append(sun/4)
         print(purchasesPerDay)
         
-#         # list shops and users
-#         global shopids, custids, retentionMetricForShops
-#         for row in values:
-#             if row[1] not in shopids:
-#                 shopids.append(row[1])
-#             if row[2] not in custids:
-#                 custids.append(row[2])
-#         # list number of times customers have made orders
-#         global numberOfRecurs
-#         for customer in custids:
-#             numberOfOrders=0
-#             for row in values:
-#                 if row[2]==customer:
-#                     numberOfOrders+=1
-#             numberOfRecurs.append(numberOfOrders)         
-#         # list shopid sums
-#         global shopidordersums
-#         for shopid in shopids:
-#             sums=0
-#             for row in values:
-#                 if row[1]==shopid:
-#                     sums+=int(row[3])
-#             shopidordersums.append(sums)
-#             
-# 
-#         #go to each shop
-#         for shop in shopids:
-#             userid=[]
-#             numberOfPurchasesByEachUser=[]
-#             #check each row
-#             for row in values:
-#                 #if the current shop is seen and if the user associated with the order isn't already in the customer list, add them
-#                 if (row[1]==shop) and (row[2] not in userid):
-#                     userid.append(row[2])
-#             #At this point we have a list of all customer who have made a purchase at the shop called userid
-#             #Now make a list of the number of times each of these users made a purchase specifically at this shop
-#             #Go to each user
-#             for user in userid:
-#                 purchases=0
-#                 #go through each row
-#                 for row in values:
-#                     #if the current shop is found and the current user is matched with it, increase the number of purchases by 1
-#                     if (row[1]==shop) and (row[2]==user):
-#                         purchases+=1
-#                 numberOfPurchasesByEachUser.append(purchases)
-#             #Now we have the number of purchases by all users who made a purchase at this particular shop and also the number of users who made a purchase
-#             averageRetention=sum(numberOfPurchasesByEachUser)/len(userid)
-#             retentionMetricForShops.append(averageRetention)
+        # list shops and users
+        global shopids, custids, retentionMetricForShops
+        for row in values:
+            if row[1] not in shopids:
+                shopids.append(row[1])
+            if row[2] not in custids:
+                custids.append(row[2])
+        # list number of times customers have made orders
+        global numberOfRecurs
+        for customer in custids:
+            numberOfOrders=0
+            for row in values:
+                if row[2]==customer:
+                    numberOfOrders+=1
+            numberOfRecurs.append(numberOfOrders)         
+        # list shopid sums
+        global shopidordersums
+        for shopid in shopids:
+            sums=0
+            for row in values:
+                if row[1]==shopid:
+                    sums+=int(row[3])
+            shopidordersums.append(sums)
+            
+
+        #go to each shop
+        for shop in shopids:
+            userid=[]
+            numberOfPurchasesByEachUser=[]
+            #check each row
+            for row in values:
+                #if the current shop is seen and if the user associated with the order isn't already in the customer list, add them
+                if (row[1]==shop) and (row[2] not in userid):
+                    userid.append(row[2])
+            #At this point we have a list of all customer who have made a purchase at the shop called userid
+            #Now make a list of the number of times each of these users made a purchase specifically at this shop
+            #Go to each user
+            for user in userid:
+                purchases=0
+                #go through each row
+                for row in values:
+                    #if the current shop is found and the current user is matched with it, increase the number of purchases by 1
+                    if (row[1]==shop) and (row[2]==user):
+                        purchases+=1
+                numberOfPurchasesByEachUser.append(purchases)
+            #Now we have the number of purchases by all users who made a purchase at this particular shop and also the number of users who made a purchase
+            averageRetention=sum(numberOfPurchasesByEachUser)/len(userid)
+            retentionMetricForShops.append(averageRetention)
 
         # retention metric test
         # the retention metric for shop 46 came out to be 1, it seems as if all the users who made a purchase were unique so the following code was written to test the hypothesis (which turned out to be correct)
-#         lst=[]
-#         for row in values:
-#             if row[1]=='31':
-#               lst.append(row[2])
-#         if len(lst) > len(set(lst)):
-#             print('oh no!')
-#         elif len(lst)==len(set(lst)):
-#             print('Yes! Code is correct!')
+        lst=[]
+        for row in values:
+            if row[1]=='31':
+              lst.append(row[2])
+        if len(lst) > len(set(lst)):
+            print('oh no!')
+        elif len(lst)==len(set(lst)):
+            print('Yes! Code is correct!')
         #plot a graph
         plotgraph()
         
