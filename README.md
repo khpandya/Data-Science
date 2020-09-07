@@ -40,7 +40,7 @@ This data does not necessarily translate to customer retention for a particular 
 The graph above shows the number of orders by the hour of the day. For example, the bar over 13 indicates the number of sales that occurred starting 1 PM and upto 2 PM. The data shows that the maximum number of sales occurred between 3 AM and 4 AM on average while the least sales happened between 4 PM and 5 PM. 
 
 To analyze the sales by what day it is, it is more appropriate to graph average sales per day data instead of graphing the number of sales directly since otherwise the 30 days gives an unfair advantage of one day to Wednesday and Thursday.
-![](graphs/SalesByDay.png)
+![](graphs/SalesbyDay.png)
 This implies that Tuesdays see the highest number of sales on average in terms of separate purchases and Monday sees the least
 
 Many more useful observations and metrics can be derived from this data which I will choose not to include here respecting the reader’s time.
