@@ -4,7 +4,7 @@
 The wrong value is resulting from directly dividing the sum of order amounts by the number of order records. Instead of using the number of records, we need to use the number of items actually ordered for the division (which is a sum of the E column). This results in a reasonable AOV of 357.92 (currency unspecified).
 ### Answer 1b.
 There are a number of interesting metrics and observations we can make from the dataset such as -
-#### 1.Most successful shops in terms of number and amount of sales. 
+#### 1. Most successful shops in terms of number and amount of sales. 
 ![](graphs/OrdersbyShop.png)
 Shopid 42 is clearly far ahead of the other shops in terms of number of ordered sneakers. We can easily see that this is largely due to a repeating order of 2000 sneakers which occurs 17 times by a recurring customer with id 607. This observation also gives us the customer providing the maximum monetary inflow among all customers (customer 607).
 ![](graphs/OrderVolume.png)
