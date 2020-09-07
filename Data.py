@@ -15,7 +15,9 @@ numberOfRecurs=[]
 retentionMetricForShops=[]
 # Purchases Per Hour
 purchasesPerHour=[]
-
+Days=['M','Tu','W','Th','F','Sa','Su']
+hours=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+purchasesPerDay=[]
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
@@ -25,25 +27,22 @@ SAMPLE_RANGE_NAME = 'A2:G5001'
 
 
 def plotgraph():
-    global shopids, retentionMetricForShops
+    global Days, purchasesPerDay
     #put x axis labels here
-    x=shopids
-    y=retentionMetricForShops
+    x=Days
+    y=purchasesPerDay
     
     index=np.arange(len(x))
     plt.bar(index, y)
     
     #title axes
-    plt.xlabel('Shops',fontsize=18)
-    plt.ylabel('Retention Metric',fontsize=18)
+    plt.xlabel('Day of Sale',fontsize=18)
+    plt.ylabel('Average Number of Sales',fontsize=18)
     
     #attach names to the xaxis points and rotate them to give enough space
-    plt.xticks(index,x,fontsize=10,rotation=90)
+    plt.xticks(index,x,fontsize=10,rotation=0)
     #title graph
-    plt.title('Customer Retention For each Shop',fontsize=20)
-    #set axes limits
-    axes=plt.gca()
-    axes.set_ylim([1,1.7])
+    plt.title('Average Sales by Day of Week',fontsize=20)
     
     plt.show()
     
@@ -94,7 +93,46 @@ def main():
                     if hour==int(time[0:2]):
                         buy+=1
             purchasesPerHour.append(buy)
-        print(purchasesPerHour)
+        global purchasesPerDay
+        W=[1,8,15,22,29]
+        Th=[2,9,16,23,30]
+        F=[3,10,17,24]
+        Sa=[4,11,18,25]
+        Su=[5,12,19,26]
+        M=[6,13,20,27]
+        Tu=[7,14,21,28]
+        mon=0
+        tue=0
+        wed=0
+        thu=0
+        fri=0
+        sat=0
+        sun=0
+        for row in values:
+            date=row[6][8:10]
+            if int(date) in W:
+                wed+=1
+            if int(date) in Th:
+                thu+=1
+            if int(date) in F:
+                fri+=1
+            if int(date) in Sa:
+                sat+=1
+            if int(date) in Su:
+                sun+=1
+            if int(date) in M:
+                mon+=1
+            if int(date) in Tu:
+                tue+=1
+        purchasesPerDay.append(mon/4)
+        purchasesPerDay.append(tue/4)
+        purchasesPerDay.append(wed/5)
+        purchasesPerDay.append(thu/5)
+        purchasesPerDay.append(fri/4)
+        purchasesPerDay.append(sat/4)
+        purchasesPerDay.append(sun/4)
+        print(purchasesPerDay)
+        
 #         # list shops and users
 #         global shopids, custids, retentionMetricForShops
 #         for row in values:
@@ -155,7 +193,7 @@ def main():
 #         elif len(lst)==len(set(lst)):
 #             print('Yes! Code is correct!')
         #plot a graph
-        #plotgraph()
+        plotgraph()
         
 if __name__ == '__main__':
     main()
