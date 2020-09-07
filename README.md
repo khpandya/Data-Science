@@ -3,7 +3,12 @@
 ### Answer 1a.
 The wrong value is resulting from directly dividing the sum of order amounts by the number of order records. Instead of using the number of records, we need to use the number of items actually ordered for the division (which is a sum of the E column). This results in a reasonable AOV of 357.92 (currency unspecified).
 ### Answer 1b.
-There are a number of interesting metrics and observations we can make from the dataset such as -
+There are a number of interesting metrics and observations we can make from the dataset but first a note -
+
+All the graphs and analytics generated in the subsequent answers were generated using Python, the google sheets API and matplotlib (for graphing). 
+The file Data.py in this repository holds the python code used but it will not run without my private credentials key. There are ways to run the code yourself however, 
+just contact me at khpandya@mun.ca with any questions. 
+All the generated graphs are stored in the graphs folder in the repository as well for further viewing. The code here was created hackathon style to generate the graphs quickly, however I have other personal projects at www.github.com/khpandya/Enigma which is an Enigma Machine Simulator in Python and even more at www.github.com/khpandya, feel free to explore! I linked the challenge instead of the projects just because I enjoy working on a good challenge! Back to the challenge now, some metrics I would report are -
 #### 1. Most successful shops in terms of number and amount of sales. 
 ![](graphs/OrdersbyShop.png)
 Shopid 42 is clearly far ahead of the other shops in terms of number of ordered sneakers. We can easily see that this is largely due to a repeating order of 2000 sneakers which occurs 17 times by a recurring customer with id 607. This observation also gives us the customer providing the maximum monetary inflow among all customers (customer 607).
