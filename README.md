@@ -41,6 +41,7 @@ The graph above shows the number of orders by the hour of the day. For example, 
 
 To analyze the sales by what day it is, it is more appropriate to graph average sales per day data instead of graphing the number of sales directly since otherwise the 30 days gives an unfair advantage of one day to Wednesday and Thursday.
 ![](graphs/SalesbyDay.png)
+
 This implies that Tuesdays see the highest number of sales on average in terms of separate purchases and Monday sees the least
 
 Many more useful observations and metrics can be derived from this data which I will choose not to include here respecting the reader’s time.
