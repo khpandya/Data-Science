@@ -6,7 +6,6 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 import matplotlib.pyplot as plt
 import numpy as np
-import datetime
 
 shopids=[]
 shopidordersums=[]
@@ -14,6 +13,9 @@ custids=[]
 numberOfRecurs=[]
 # measure customer retention
 retentionMetricForShops=[]
+# Purchases Per Hour
+purchasesPerHour=[]
+
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
@@ -80,8 +82,19 @@ def main():
     if not values:
         print('No data found.')
     else:
-        datetimeobj=datetime(values[1][6])
-        print(type(datetimeobj))
+        global purchasesPerHour
+        # Time for sales
+        for hour in range(24):
+            buy=0
+            for row in values:
+                time=row[6][11:]
+                if hour<10 and hour==int(time[0]) and time[1]==':':
+                    buy+=1
+                if hour>9 and len(time)==8:
+                    if hour==int(time[0:2]):
+                        buy+=1
+            purchasesPerHour.append(buy)
+        print(purchasesPerHour)
 #         # list shops and users
 #         global shopids, custids, retentionMetricForShops
 #         for row in values:
