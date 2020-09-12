@@ -64,8 +64,8 @@ Many more useful observations and metrics can be derived from this data which I 
 
 Query used - 
 ```
-SELECT COUNT(OrderID) FROM [Orders] where ShipperID in 
-(Select ShipperID FROM Shippers where ShipperName is 'Speedy Express')
+SELECT COUNT(OrderID) FROM [Orders] WHERE ShipperID in 
+  (SELECT ShipperID FROM Shippers WHERE ShipperName is 'Speedy Express')
 ```
 ### Answer 2b 
 (or not to be, that is the question)
