@@ -73,7 +73,7 @@ SELECT COUNT(OrderID) FROM [Orders] where ShipperID in
 All puns aside, the answer is **Peacock**.
 I ran two queries - First
 ```
-SELECT EmployeeID,COUNT(EmployeeID) FROM [Orders] GROUP BY EmployeeID Order by COUNT(EmployeeID) DESC LIMIT 2
+SELECT EmployeeID,COUNT(EmployeeID) FROM [Orders] GROUP BY EmployeeID ORDER BY COUNT(EmployeeID) DESC LIMIT 2
 ```
 Notice the `limit 2`, that is in case there were more than one employees who had the same (max.) amount of orders so this made sure that wasn’t the case. After ensuring this - I ran
 ```
@@ -83,17 +83,17 @@ which gives me **Peacock**.
 We could also directly write 
 ```
 SELECT LastName FROM [Employees] WHERE EmployeeID in 
-(SELECT EmployeeID FROM [Orders] GROUP BY EmployeeID Order by COUNT(EmployeeID) DESC LIMIT 1)
+  (SELECT EmployeeID FROM [Orders] GROUP BY EmployeeID ORDER BY COUNT(EmployeeID) DESC LIMIT 1)
 ```
 If we wanted to skip the check for the common maximum.
 ### Answer 2c
 **Gorgonzola Telino** was ordered the most by customers in Germany.
 Run -
 ```
-Select ProductID,COUNT(ProductID) AS number from OrderDetails WHERE OrderID in 
-(Select OrderID from Orders Where CustomerID in 
-(Select CustomerID from Customers where Country is 'Germany')) 
-Group by ProductID Order by number DESC LIMIT 2
+SELECT ProductID,COUNT(ProductID) AS number FROM OrderDetails WHERE OrderID in 
+  (Select OrderID FROM Orders WHERE CustomerID in 
+    (Select CustomerID FROM Customers WHERE Country is 'Germany')) 
+GROUP BY ProductID ORDER BY number DESC LIMIT 2
 ```
 This gives the productid of the two most popular products ordered by people from germany (two to make sure there aren’t two maximums). The product id is 31.
 Now,
@@ -104,11 +104,11 @@ which gives us the answer.
 To get the name directly without the check we can also use -
 ```
 SELECT ProductName FROM [Products] WHERE ProductID in 
-(Select ProductID from 
-(Select ProductID,COUNT(ProductID) AS number from OrderDetails WHERE OrderID in 
-(Select OrderID from Orders Where CustomerID in 
-(Select CustomerID from Customers where Country is 'Germany')) 
-Group by ProductID Order by number DESC LIMIT 1))
+(SELECT ProductID FROM 
+  (SELECT ProductID,COUNT(ProductID) AS number FROM OrderDetails WHERE OrderID in 
+    (SELECT OrderID FROM Orders WHERE CustomerID in 
+      (SELECT CustomerID FROM Customers WHERE Country is 'Germany')) 
+GROUP BY ProductID ORDER BY number DESC LIMIT 1))
 ```
 making use of subqueries.
 
